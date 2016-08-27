@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+<head>
+<meta charset=utf-8 />
+<title>myStream</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.10.2/alt/video-js-cdn.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.10.2/video.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.0.2/videojs-contrib-hls.js"></script>
+</head>
+<body>
+  <h1>myStream</h1>
+  <video id="my_vid" class="video-js vjs-default-skin" controls width="320" height="240">
+  </video>
+  <script>
+    var player = videojs('my_vid');
+    player.src({
+      src: "https://mondain.github.io/paulgregoire.github.io/hls/playlist.m3u8",
+      type: 'application/x-mpegURL',
+      useCueTags: true
+    });
+
+    let textTracks = player.textTracks();
+    console.log('Tracks: ' + textTracks.length);
+
+    if (textTracks !== undefined) {
+      player.addTextTrack('metadata');
+            
+      textTracks.addEventListener('addtrack', function(addTrackEvent) {
+        console.log('Added text track');
+        var track = addTrackEvent.track;
+        // 0 for end time to show only once
+        var cue = new VTTCue(1.0, 0, 'Testing');
+        cue.id = 1
+        cue.pauseOnExit = false;
+        track.addCue(cue);
+
+        track.addEventListener('cuechange', function(cueChangeEvent) {
+          // do what you want with the cueChangeEvent
+          console.log(cueChangeEvent);
+          console.log('Cue text: ' + cueChangeEvent.currentTarget.cues[0].text);
+        });
+ 
+      });      
+    } else {
+      console.log("No text tracks");
+    }
+
+</script>
+</body>
+</html>
