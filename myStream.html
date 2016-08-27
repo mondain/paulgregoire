@@ -33,8 +33,6 @@
       textTracks.addEventListener('addtrack', function(addTrackEvent) {
         console.log('Added text track');
         var track = addTrackEvent.track;
-        //track.mode = 'hidden'; // default appears to be hidden
-//https://w3c.github.io/webvtt/
         // 0 for end time to show only once
         var cue = new VTTCue(1.0, 0, 'Testing');
         cue.id = 1
@@ -52,29 +50,6 @@
       console.log("No text tracks");
     }
 
-    let cuesTrack;
-
-    for (let i = 0; i < textTracks.length; i++) {
-      if (textTracks[i].label === 'ad-cues') {
-        cuesTrack = textTracks[i];
-      }
-    }
-    
-    if (cuesTrack !== undefined) {
-      cuesTrack.addEventListener('cuechange', function() {
-        let activeCues = cuesTrack.activeCues;
-
-        for (let i = 0; i < activeCues.length; i++) {
-          let activeCue = activeCues[i];
-
-          console.log('Cue runs from ' + activeCue.startTime + ' to ' + activeCue.endTime);
-        }
-      });      
-    } else {
-      console.log("No cue tracks");
-    }
-    
-  </script>
-  
+</script>
 </body>
 </html>
